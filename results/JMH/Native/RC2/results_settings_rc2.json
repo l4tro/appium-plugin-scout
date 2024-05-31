@@ -1,0 +1,196 @@
+[
+    {
+        "jmhVersion" : "1.36",
+        "benchmark" : "benchmark.AppiumCreateWidgets.createWidgetsBenchmark",
+        "mode" : "avgt",
+        "threads" : 1,
+        "forks" : 5,
+        "jvm" : "C:\\Users\\fnord\\Documents\\jdk-17.0.11\\bin\\java.exe",
+        "jvmArgs" : [
+            "-Dfile.encoding=windows-1252",
+            "-Djava.io.tmpdir=C:\\Users\\fnord\\Documents\\Programmering\\Examensarbete\\Scout\\hivemind\\Scout\\build\\tmp\\jmh",
+            "-Duser.country=US",
+            "-Duser.language=en",
+            "-Duser.variant"
+        ],
+        "jdkVersion" : "17.0.11",
+        "vmName" : "Java HotSpot(TM) 64-Bit Server VM",
+        "vmVersion" : "17.0.11+7-LTS-207",
+        "warmupIterations" : 1,
+        "warmupTime" : "40 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 1,
+        "measurementTime" : "40 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 1.7221867852820326E7,
+            "scoreError" : 825068.2840386274,
+            "scoreConfidence" : [
+                1.6396799568781698E7,
+                1.804693613685895E7
+            ],
+            "scorePercentiles" : {
+                "0.0" : 1.7021444936170213E7,
+                "50.0" : 1.7195640309411258E7,
+                "90.0" : 1.7580929920913883E7,
+                "95.0" : 1.7580929920913883E7,
+                "99.0" : 1.7580929920913883E7,
+                "99.9" : 1.7580929920913883E7,
+                "99.99" : 1.7580929920913883E7,
+                "99.999" : 1.7580929920913883E7,
+                "99.9999" : 1.7580929920913883E7,
+                "100.0" : 1.7580929920913883E7
+            },
+            "scoreUnit" : "ns/op",
+            "rawData" : [
+                [
+                    1.7021444936170213E7
+                ],
+                [
+                    1.720612602150538E7
+                ],
+                [
+                    1.7580929920913883E7
+                ],
+                [
+                    1.7105198076100897E7
+                ],
+                [
+                    1.7195640309411258E7
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.36",
+        "benchmark" : "benchmark.AppiumGetScreenshot.getScreenshotBenchmark",
+        "mode" : "avgt",
+        "threads" : 1,
+        "forks" : 5,
+        "jvm" : "C:\\Users\\fnord\\Documents\\jdk-17.0.11\\bin\\java.exe",
+        "jvmArgs" : [
+            "-Dfile.encoding=windows-1252",
+            "-Djava.io.tmpdir=C:\\Users\\fnord\\Documents\\Programmering\\Examensarbete\\Scout\\hivemind\\Scout\\build\\tmp\\jmh",
+            "-Duser.country=US",
+            "-Duser.language=en",
+            "-Duser.variant"
+        ],
+        "jdkVersion" : "17.0.11",
+        "vmName" : "Java HotSpot(TM) 64-Bit Server VM",
+        "vmVersion" : "17.0.11+7-LTS-207",
+        "warmupIterations" : 1,
+        "warmupTime" : "40 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 1,
+        "measurementTime" : "40 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 1.2424372564858016E8,
+            "scoreError" : 3979281.3887669253,
+            "scoreConfidence" : [
+                1.2026444425981323E8,
+                1.282230070373471E8
+            ],
+            "scorePercentiles" : {
+                "0.0" : 1.2330873261538461E8,
+                "50.0" : 1.237147725308642E8,
+                "90.0" : 1.2575841442006269E8,
+                "95.0" : 1.2575841442006269E8,
+                "99.0" : 1.2575841442006269E8,
+                "99.9" : 1.2575841442006269E8,
+                "99.99" : 1.2575841442006269E8,
+                "99.999" : 1.2575841442006269E8,
+                "99.9999" : 1.2575841442006269E8,
+                "100.0" : 1.2575841442006269E8
+            },
+            "scoreUnit" : "ns/op",
+            "rawData" : [
+                [
+                    1.2485950373831776E8
+                ],
+                [
+                    1.2575841442006269E8
+                ],
+                [
+                    1.237147725308642E8
+                ],
+                [
+                    1.2330873261538461E8
+                ],
+                [
+                    1.2357720493827161E8
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    },
+    {
+        "jmhVersion" : "1.36",
+        "benchmark" : "benchmark.AppiumUpdateCapture.updateCaptureBenchmark",
+        "mode" : "avgt",
+        "threads" : 1,
+        "forks" : 5,
+        "jvm" : "C:\\Users\\fnord\\Documents\\jdk-17.0.11\\bin\\java.exe",
+        "jvmArgs" : [
+            "-Dfile.encoding=windows-1252",
+            "-Djava.io.tmpdir=C:\\Users\\fnord\\Documents\\Programmering\\Examensarbete\\Scout\\hivemind\\Scout\\build\\tmp\\jmh",
+            "-Duser.country=US",
+            "-Duser.language=en",
+            "-Duser.variant"
+        ],
+        "jdkVersion" : "17.0.11",
+        "vmName" : "Java HotSpot(TM) 64-Bit Server VM",
+        "vmVersion" : "17.0.11+7-LTS-207",
+        "warmupIterations" : 1,
+        "warmupTime" : "40 s",
+        "warmupBatchSize" : 1,
+        "measurementIterations" : 1,
+        "measurementTime" : "40 s",
+        "measurementBatchSize" : 1,
+        "primaryMetric" : {
+            "score" : 1.6218011629159313E8,
+            "scoreError" : 1.8877136360363565E7,
+            "scoreConfidence" : [
+                1.4330297993122956E8,
+                1.810572526519567E8
+            ],
+            "scorePercentiles" : {
+                "0.0" : 1.5934469444444445E8,
+                "50.0" : 1.60276108E8,
+                "90.0" : 1.7087874680851063E8,
+                "95.0" : 1.7087874680851063E8,
+                "99.0" : 1.7087874680851063E8,
+                "99.9" : 1.7087874680851063E8,
+                "99.99" : 1.7087874680851063E8,
+                "99.999" : 1.7087874680851063E8,
+                "99.9999" : 1.7087874680851063E8,
+                "100.0" : 1.7087874680851063E8
+            },
+            "scoreUnit" : "ns/op",
+            "rawData" : [
+                [
+                    1.5950669365079364E8
+                ],
+                [
+                    1.7087874680851063E8
+                ],
+                [
+                    1.5934469444444445E8
+                ],
+                [
+                    1.60276108E8
+                ],
+                [
+                    1.6089433855421686E8
+                ]
+            ]
+        },
+        "secondaryMetrics" : {
+        }
+    }
+]
+
+

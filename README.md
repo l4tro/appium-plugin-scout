@@ -14,8 +14,8 @@ For more details on how to run the benchmarks, see the README.md file in the ben
 - Gradle
 - Appium along with the UiAutomator2 driver
 - Android SDK
-- Appium and the various Android SDK tools (```adb``` etc.) must be added to the PATH environment variable
+- Appium and the various Android SDK tools (```adb```, ```emulator``` etc.) must be added to the PATH environment variable
 
 ## Usage
-In order to use any version the plugin it must be placed into the plugins folder of the Scout/Hivemind release (Scout/src/main/java/plugin). The default Scout/build.gradle.kts file must also be replaced with the build.gradle.kts file provided in the release candidate folder.
+In order to use any version the plugin it must be placed into the plugins folder of the Scout/Hivemind release (Scout/src/main/java/plugin). The default Scout/build.gradle.kts file must also be replaced with the build.gradle.kts file provided in the relevant release candidate folder.
 Scout/Hivemind can then be built using the ```gradle build``` command.

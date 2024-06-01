@@ -115,7 +115,7 @@ For the native Android application effectiveness testing five pre-defined tests 
 3. Description: Delete an event.
    - Expected Result: The selected event is deleted from the calendar
 
-## Test Case 5: 
+## Test Case 5: Search for an application
 **Test Procedure:**
 1. Description: Open the Google Play Store application.
    - Expected Result: The Google Play Store application started successfully and widgets are created.

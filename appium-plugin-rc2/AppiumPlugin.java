@@ -9,10 +9,6 @@ import com.symatiq.states.StateController;
 import com.symatiq.widgets.Widget;
 import io.appium.java_client.android.AndroidDriver;
 import org.openqa.selenium.*;
-import org.openqa.selenium.By;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.WebDriverException;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Pause;
 import org.openqa.selenium.interactions.PointerInput;
 import org.openqa.selenium.interactions.Sequence;
@@ -82,16 +78,7 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
     private static boolean typingInProgress = false;
     private static long timeSinceLastCapture = 0;
     private static String emulatorString;
-    private static final boolean debugMode = true; // Set to true to enable additional console output
-    public static List<WebElement> elements = new ArrayList<>();
-
-    // ==============================================================================
-    // =========================== BENCHMARK METHODS ================================
-    // ==============================================================================
-
-    public void setWebDriver(AndroidDriver webDriver) {
-        AppiumPlugin.webDriver = webDriver;
-    }
+    private static final boolean debugMode = false; // Set to true to enable additional console output
 
     // ==============================================================================
     // =========================== PLUGIN CONTROLLER METHODS ========================
@@ -147,6 +134,7 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
 
         // If no emulator matching the AVD name from ProductView is running, start it.
         // TODO:Look into handling running but not matching emulators.
+        //if(!emulatorStatus()) {
         if(!emulatorStatus(avdName)) {
             startEmulator(avdName);
         }
@@ -393,6 +381,7 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
      * @param emulatorId the ID of the emulator to stop.
      */
     private void stopEmulator(String emulatorId) {
+        if (debugMode) System.out.println("Stopping emulator...");
         try {
             ProcessBuilder processBuilder = new ProcessBuilder("adb", "-s", emulatorId, "emu", "kill");
             processBuilder.start();
@@ -438,6 +427,30 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
 
     /**
      * Checks the current status of the emulator.
+     * @return true if any emulator is running and has finished booting, false otherwise.
+     */
+    private static boolean emulatorStatus() {
+        try {
+            ProcessBuilder processBuilder = new ProcessBuilder("adb", "devices");
+            Process process = processBuilder.start();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.startsWith("emulator-")) {
+                    String emulatorId = line.split("\\s")[0];
+                    if (bootOk(emulatorId)) {
+                        return true;
+                    }
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("Error occurred while checking the status of the emulator: " + e.getMessage());
+        }
+        return false;
+    }
+
+    /**
+     * Checks the current status of the emulator.
      * @param expectedAvdName the name of the emulator (as displayed by 'emulator -list-avds').
      * @return true if the emulator is running, false otherwise.
      */
@@ -451,12 +464,12 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
                 if (line.startsWith("emulator-")) {
                     String emulatorId = line.split("\\s")[0];
                     String avdName = getActualAvdName(emulatorId);
-                    if(debugMode) System.out.println("Name of the emulator: " + avdName);
+                    if(debugMode) System.out.println("Name of the emulator: " + avdName + " Expected name: " + expectedAvdName);
                     if (avdName.equals(expectedAvdName)) {
                         if(debugMode) System.out.println("Name matched");
-                        emulatorString = "emulator-" + emulatorId; //Reconstruct the emulator string, looks hacky but should work and it makes teardown easier.
+                        emulatorString = emulatorId;
                         // Check if the emulator has finished booting
-                        if (bootOk(emulatorString)) return true;
+                        if (bootOk(emulatorId)) return true;
                     }
                     // Consider how to handle the case where an emulator is running but not the one matching ProductView
                 }
@@ -473,11 +486,13 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
      * @return true if the emulator has finished booting, false otherwise.
      */
     private static boolean bootOk(String emulatorId) throws IOException {
+        if (debugMode) System.out.println("Checking if boot is completed... Emulator ID: " + emulatorId);
         ProcessBuilder bootCompletedProcessBuilder = new ProcessBuilder("adb", "-s", emulatorId, "shell", "getprop", "sys.boot_completed");
         Process bootCompletedProcess = bootCompletedProcessBuilder.start();
         BufferedReader bootCompletedReader = new BufferedReader(new InputStreamReader(bootCompletedProcess.getInputStream()));
         String bootCompleted;
         while ((bootCompleted = bootCompletedReader.readLine()) != null) {
+            if (debugMode) System.out.println("Current line: " + bootCompleted);
             if (bootCompleted.trim().equals("1")) {
                 return true;
             }
@@ -502,7 +517,9 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
 
         while (!(avdName = socketReader.readLine()).equals("OK")) {
             // Keep reading until we encounter the "OK" line
+            if (debugMode) System.out.println("Waiting for OK from emulator... Current line: " + avdName);
         }
+        if (debugMode) System.out.println("OK given...");
         avdName = socketReader.readLine();
         return avdName;
     }
@@ -721,7 +738,7 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
     /**
      * Gets a new screenshot of the SUT display and performs a call to update widgets.
      */
-    public void updateCapture() {
+    private void updateCapture() {
         if (updatingCapture) {
             return;
         }
@@ -730,8 +747,6 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
         if(!sourceChanged) {
             hasSourceChanged();
         }
-
-        sourceChanged = true; // Always true for benchmarking purposes.
 
         if(sourceChanged) {
             lastCapture = getScreenshot();
@@ -761,30 +776,6 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
         return image;
     }
 
-    public BufferedImage getScreenshot2() {
-        try {
-            ProcessBuilder processBuilder = new ProcessBuilder("adb", "exec-out", "screencap", "-p");
-            Process process = processBuilder.start();
-            InputStream inputStream = process.getInputStream();
-
-            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = inputStream.read(buffer)) != -1) {
-                byteArrayOutputStream.write(buffer, 0, length);
-            }
-            byte[] imageData = byteArrayOutputStream.toByteArray();
-
-            ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(imageData);
-            BufferedImage bufferedImage = ImageIO.read(byteArrayInputStream);
-            return bufferedImage;
-
-        } catch (IOException e) {
-            System.err.println("Error occurred while taking a screenshot of the emulated device: " + e.getMessage());
-            return null;
-        }
-    }
-
     /**
      * Checks if the source of the SUT display has changed.
      */
@@ -797,10 +788,6 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
         }
     }
 
-    public String getPageSource() {
-        return webDriver.getPageSource();
-    }
-
     /**
      * Creates widgets from the elements found in the SUT display.
      */
@@ -811,7 +798,7 @@ public class AppiumPlugin extends PluginAbstract implements PluginAbstractReport
 
         textElementNumber = 0;
         long start = System.currentTimeMillis();
-        String pageSource = getPageSource();
+        String pageSource = webDriver.getPageSource();
         Document doc = null;
 
         try {
